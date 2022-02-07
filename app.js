@@ -28,11 +28,14 @@ app.use('/users', usersRouter);
 //omat setit
 app.get('/firsttoken', function (req, res) {
   console.log(req.query.code)
-   let token= req.query.code //code on starvan "token"
-  //joku functio mikä käsittelee tokenin ja hakee sillä accesstokenin
-  //ja palauttaa fronttii ja työntää kantaa
+  let token= req.query.code //code on starvan "token"
   res.send("You can now return to Juoksee application, first token: "+token)
+  //todo: fetch accesstoken
+  //hae trainingit
+  //ja palauttaa fronttii
 })
+
+
 
 app.post('/hello', function (req, res) {
   res.send('Got a POST request')
