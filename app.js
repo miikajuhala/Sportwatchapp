@@ -44,8 +44,6 @@ app.get('/firsttoken', function (req, res) {
   let token= req.query.code //code on starvan "token"
   fetchTokens(token)
   return res.send("You can now return to Juoksee application, first token: "+token)
-    
-    
 })
 
 //fetch accesstoken and refreshtoken
@@ -59,21 +57,21 @@ const fetchTokens =(token)=>{
   .then(response =>{
     let accesstoken = response.data.access_token
     let refreshtoken = response.data.refresh_token
+    let athleteid = response.data.athlete.id
     console.log("ACCESSTOKEN: "+accesstoken+" REFRESHTOKEN: "+refreshtoken)
    
    
-    const aTuringRef = db.collection('users').doc('aturing');
+    const aTuringRef = db.collection('users').doc(athleteid.toString());
 
      aTuringRef.set({
-      'username': 'Alan',
+      'username': response.data.athlete.username,
       'accesstoken': accesstoken,
       'refreshtoken': refreshtoken,
-      'id': 2
+
     });
 
   })
 }
-
 
 app.post('/hello', function (req, res) {
   res.send('Got a POST request')
