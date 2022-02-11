@@ -38,19 +38,22 @@ const db = getFirestore();
 
 
 
-//recieve token and get access and refresh tokens
-app.get('/firsttoken', function (req, res) {
-  console.log(req.query.code)
-  let token= req.query.code //code on starvan "token"
-  fetchTokens(token)
-  return res.send("You can now return to Juoksee application, first token: "+token)
-})
+//recieve token and launch fetchtoken
+// app.get('/firsttoken', function (req, res) {
+//   console.log(req.query.code)
+//   let token= req.query.code //code on starvan "token"
+//   fetchTokens(token)
+//   return res.send("You can now return to Juoksee application, first token: "+token)
+// })
 
 //fetch accesstoken and refreshtoken
-const fetchTokens =(token)=>{
+app.get("/fetchtokens", function(req, res) {
+  //gets token as parameter
+  let token = req.query.token
+  console.log(token)
   axios.post("https://www.strava.com/oauth/token",{
-    client_id: 76862,
-    client_secret: "67401766aa8757e4f2c742595091a8d3014137c6",
+    client_id: 76865,
+    client_secret: "107ac6bf8435b59f1b9d77699d7d3b478acac762",
     code: token,
     grant_type: "authorization_code"
   })
@@ -58,20 +61,25 @@ const fetchTokens =(token)=>{
     let accesstoken = response.data.access_token
     let refreshtoken = response.data.refresh_token
     let athleteid = response.data.athlete.id
-    console.log("ACCESSTOKEN: "+accesstoken+" REFRESHTOKEN: "+refreshtoken)
-   
-   
+    console.log(accesstoken +"   :   "+ refreshtoken +" : "+athleteid )
+
+   //firebase save user info 
     const aTuringRef = db.collection('users').doc(athleteid.toString());
-
-     aTuringRef.set({
-      'username': response.data.athlete.username,
-      'accesstoken': accesstoken,
-      'refreshtoken': refreshtoken,
-
-    });
-
+      aTuringRef.set({
+        'username': response.data.athlete.username,
+        'accesstoken': accesstoken,
+        'refreshtoken': refreshtoken,
+      });
+      
+      //sends information back to frontend
+      res.format({
+        'application/json': function () {
+          res.send({athleteid: athleteid})
+        },
+      })
   })
-}
+})
+
 
 app.post('/hello', function (req, res) {
   res.send('Got a POST request')
