@@ -47,9 +47,9 @@ const db = getFirestore();
 // })
 
 //fetch accesstoken and refreshtoken
-app.post("/fetchtokens", function(req, res) {
+app.get("/fetchtokens", function(req, res) {
   //gets token as parameter
-
+  
   axios.post("https://www.strava.com/oauth/token",{
     client_id: 76865,
     client_secret: "730552ce3c5902effd400a44c0409f50f7178b86",
