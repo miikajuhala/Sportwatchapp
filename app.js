@@ -47,17 +47,20 @@ const db = getFirestore();
 // })
 
 //fetch accesstoken and refreshtoken
-app.get("/fetchtokens", function(req, res) {
+app.post("/fetchtokens", function(req, res) {
   //gets token as parameter
-  let token = req.query.token
-  console.log(token)
+
   axios.post("https://www.strava.com/oauth/token",{
     client_id: 76865,
-    client_secret: "107ac6bf8435b59f1b9d77699d7d3b478acac762",
-    code: token,
+    client_secret: "730552ce3c5902effd400a44c0409f50f7178b86",
+    code: req.query.token,
     grant_type: "authorization_code"
   })
   .then(response =>{
+      if(response.status != 200){
+        console.log("vittusaatana") 
+        return
+      }
     let accesstoken = response.data.access_token
     let refreshtoken = response.data.refresh_token
     let athleteid = response.data.athlete.id
