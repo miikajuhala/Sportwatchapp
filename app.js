@@ -79,7 +79,7 @@ app.get("/fetchtokens", function(req, res) {
         'application/json': function () {
           res.send({athleteid: athleteid})
         },
-      })
+      }) 
   })
 })
 
