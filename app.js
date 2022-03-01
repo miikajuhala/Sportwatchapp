@@ -37,28 +37,19 @@ initializeApp({
 const db = getFirestore();
 
 
-
-//recieve token and launch fetchtoken
-// app.get('/firsttoken', function (req, res) {
-//   console.log(req.query.code)
-//   let token= req.query.code //code on starvan "token"
-//   fetchTokens(token)
-//   return res.send("You can now return to Juoksee application, first token: "+token)
-// })
-
 //fetch accesstoken and refreshtoken
 app.get("/fetchtokens", function(req, res) {
   //gets token as parameter
   
   axios.post("https://www.strava.com/oauth/token",{
-    client_id: 76865,
-    client_secret: "730552ce3c5902effd400a44c0409f50f7178b86",
+    client_id: "CLIENT_ID",
+    client_secret: "CLIENT_SECRET",
     code: req.query.token,
     grant_type: "authorization_code"
   })
   .then(response =>{
       if(response.status != 200){
-        console.log("vittusaatana") 
+        console.log("error") 
         return
       }
     let accesstoken = response.data.access_token
@@ -84,8 +75,7 @@ app.get("/fetchtokens", function(req, res) {
 })
 
 
-app.post('/hello', function (req, res) {
-  res.send('Got a POST request')
+app.post('/googlelogin', function (req, res) {
 })
 
 
